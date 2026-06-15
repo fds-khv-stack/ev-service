@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EV Service — сервис гибридов в Хабаровске · ремонт ВВБ, контроллеры охлаждения, чип-тюнинг</title>
+<meta name="description" content="EV Service, Хабаровск — высоковольтный сервис гибридов. Ремонт и ТО, ремонт ВВБ, роботизированные АКПП Honda, чип-тюнинг. Собственные контроллеры охлаждения ВВБ для Toyota/Lexus — отгрузка по всей России.">
+<meta name="theme-color" content="#07080A">
+<meta property="og:title" content="EV Service — высоковольтный сервис гибридов, Хабаровск">
+<meta property="og:description" content="Ремонт ВВБ, роботы Honda, чип-тюнинг и собственные контроллеры охлаждения ВВБ для Toyota/Lexus.">
+<meta property="og:image" content="Img/Screenshot_3.jpg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="EV Service">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="geo.region" content="RU-KHA">
+<meta name="geo.placename" content="Хабаровск">
+<meta name="robots" content="index,follow">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" as="image" href="Img/Screenshot_3.jpg" fetchpriority="high">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;900&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style-v2.css">
+
+<style>
+  /* Стили для правильного наложения интерактивного слоя Tesla */
+  .tesla-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;             /* Выше бэкграунда, но ниже основного контента */
+    pointer-events: none;   /* Позволяет кликать сквозь холст по кнопкам и ссылкам */
+  }
+
+  .bg-fx {
+    z-index: 0;
+  }
+
+  .site-header, 
+  main, 
+  .container, 
+  .btn,
+  .fab-call {
+    position: relative;
+    z-index: 2;
+  }
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AutoRepair",
+  "name": "EV Service",
+  "description": "Высоковольтный сервис гибридов и электромобилей в Хабаровске: ремонт ВВБ, роботизированные АКПП Honda, чип-тюнинг, собственные контроллеры охлаждения ВВБ для Toyota и Lexus.",
+  "image": "Img/Screenshot_3.jpg",
+  "telephone": "+79626790356",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "ул. Чукотская, 18",
+    "addressLocality": "Хабаровск",
+    "addressRegion": "Хабаровский край",
+    "addressCountry": "RU"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 48.4827,
+    "longitude": 135.0838
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+    "opens": "11:00",
+    "closes": "17:30"
+  },
+  "priceRange": "₽₽",
+  "areaServed": "RU",
+  "sameAs": [
+    "https://www.instagram.com/ev_service/",
+    "https://go.2gis.com/4UUpm"
+  ]
+}
+</script>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+<div class="bg-fx" aria-hidden="true">
+  <span class="blob blob--cyan"></span>
+  <span class="blob blob--blue"></span>
+  <span class="blob blob--amber"></span>
+  <div class="grid-overlay"></div>
+</div>
+
+<canvas id="teslaLayer" class="tesla-layer" aria-hidden="true"></canvas>
+
+<header class="site-header" id="header">
+  <div class="container header__inner">
+    <a href="#hero" class="logo" aria-label="EV Service — на главную">
+      <span class="logo__mark" aria-hidden="true">
+        <svg viewBox="0 0 48 32" width="40" height="27"><use href="#evlogo"/></svg>
+      </span>
+      <span class="logo__text">EV<span>Service</span></span>
+    </a>
+
+    <nav class="nav" id="nav" aria-label="Основная навигация">
+      <a href="#services">Услуги</a>
+      <a href="#battery">Ремонт ВВБ</a>
+      <a href="#controller">Контроллеры</a>
+      <a href="#install">Установка</a>
+      <a href="#faq">Вопросы</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+
+    <a href="#contacts" class="btn btn--primary header__phone">
+      <span>Связаться с нами</span>
+    </a>
+
+    <button class="burger" id="burger" aria-label="Меню" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+
+<section class="hero" id="hero">
+  <div class="hero__media">
+    <img src="Img/Screenshot_3.jpg" alt="Сервисный цех EV Service в Хабаровске" width="1920" height="1080" loading="eager" fetchpriority="high" decoding="async">
+    <div class="hero__scrim"></div>
+  </div>
+
+  <canvas id="arcLayer" class="arc-layer" aria-hidden="true"></canvas>
+
+  <svg class="hero__pulse" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 60 H380 l24 -44 l30 88 l26 -64 l22 40 H760 l30 -30 l24 30 H1200" fill="none" stroke="url(#pulseGrad)" stroke-width="2.5"/>
+    <defs>
+      <linearGradient id="pulseGrad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#19E3FF" stop-opacity="0"/>
+        <stop offset="0.5" stop-color="#19E3FF"/>
+        <stop offset="1" stop-color="#FF7A1A" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <div class="container hero__inner">
+    <span class="eyebrow reveal"><i class="dot"></i> Хабаровск · высоковольтный сервис гибридов</span>
+    <h1 class="hero__title reveal">
+      Сервис гибридов,<br>который понимает
+      <span class="grad-text">высокое&nbsp;напряжение</span>
+    </h1>
+    <p class="hero__lead reveal">
+      Ремонт и техническое обслуживание автомобилей, ремонт и замена ВВБ, ремонт
+      роботизированных АКПП Honda, чип-тюнинг — индивидуальная калибровка, реверс-инжиниринг, отстройка по логам,
+      контроллеры охлаждения ВВБ собственной разработки и производства для Toyota и Lexus —
+      мы делаем то, за что не берутся обычные СТО.
+    </p>
+
+    <div class="hero__stats reveal">
+      <div class="stat"><b data-count="10" data-suffix=" лет">0</b><span>на рынке</span></div>
+      <div class="stat"><b data-count="4500" data-suffix="+">0</b><span>авто в работе</span></div>
+      <div class="stat"><b data-count="50" data-suffix="+">0</b><span>регионов поставки</span></div>
+      <div class="stat"><b data-count="12" data-suffix=" мес">0</b><span>гарантия на ВВБ</span></div>
+    </div>
+  </div>
+
+  <a href="#services" class="hero__scroll" aria-label="Листать вниз"><span></span></a>
+</section>
+
+<section class="section" id="services">
+  <div class="container">
+    <div class="section__head reveal">
+      <span class="kicker">Что мы делаем</span>
+      <h2 class="section__title">Основные направления</h2>
+      <p class="section__sub">Четыре главных компетенции, на которых держится сервис — и которые приносят результат каждый день.</p>
+    </div>
+
+    <div class="cards">
+      <article class="card reveal">
+        <div class="card__no">01</div>
+        <div class="card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-2.3 2.3-2.4-.6-.6-2.4 2.3-2.3Z"/></svg>
+        </div>
+        <h3>Ремонт и техобслуживание</h3>
+        <p>Полный цикл ТО, диагностика, ходовая, двигатель, электрика. Честная дефектовка и прозрачная смета до начала работ.</p>
+      </article>
+
+      <article class="card reveal">
+        <div class="card__no">02</div>
+        <div class="card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l2.5 2.5M16.5 16.5 19 19M19 5l-2.5 2.5M7.5 16.5 5 19"/></svg>
+        </div>
+        <h3>Роботизированные АКПП Honda</h3>
+        <p>Профильный ремонт «роботов» Honda: сцепления, актуаторы, адаптации, мехатроника. Узкая специализация — предсказуемый результат.</p>
+      </article>
+
+      <article class="card reveal card--accent">
+        <div class="card__no">03</div>
+        <div class="card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="7" width="16" height="10" rx="2"/><path d="M19 10h2v4h-2M7 12h2M11 10v4M11 12h2"/></svg>
+        </div>
+        <h3>Ремонт ВВБ</h3>
+        <p>Дефектовка NiMH высоковольтных батарей, замена и балансировка компонентов ВВБ, гарантия 12 месяцев.</p>
+      </article>
+
+      <article class="card reveal">
+        <div class="card__no">04</div>
+        <div class="card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 13a8 8 0 0 1 16 0"/><path d="M12 13l4-3"/><circle cx="12" cy="13" r="1.5" fill="currentColor"/><path d="M4 13v4h16v-4"/></svg>
+        </div>
+        <h3>Чип-тюнинг</h3>
+        <p>Грамотная перепрошивка ЭБУ под задачу: мощность, эластичность, экономичность, программное удаление EGR. Без вреда ресурсу.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section feature" id="battery">
+  <div class="container feature__grid">
+    <div class="feature__media carousel reveal" data-carousel data-lightbox>
+      <div class="carousel__track">
+        <a class="cslide" href="Img/stend/photo_2023-03-24_19-18-12.jpg"><img src="Img/stend/photo_2023-03-24_19-18-12.jpg" alt="Анализатор ВВБ — основное устройство в кейсе" width="800" height="600" loading="lazy" decoding="async"></a>
+        <a class="cslide" href="Img/stend/photo_2023-03-24_19-18-13.jpg"><img src="Img/stend/photo_2023-03-24_19-18-13.jpg" alt="Анализатор ВВБ — подключение каналов" width="800" height="600" loading="lazy" decoding="async"></a>
+        <a class="cslide" href="Img/stend/photo_2023-03-24_19-13-32%20(2).jpg"><img src="Img/stend/photo_2023-03-24_19-13-32%20(2).jpg" alt="Стенд диагностики высоковольтной батареи" width="800" height="600" loading="lazy" decoding="async"></a>
+      </div>
+      <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Предыдущее фото">‹</button>
+      <button class="carousel__btn carousel__btn--next" type="button" aria-label="Следующее фото">›</button>
+      <div class="carousel__dots" aria-hidden="true"></div>
+      <div class="feature__badge">
+        <b>Дефектовка NiMH высоковольтных батарей</b>
+        <span>замер каждой ячейки под нагрузкой</span>
+      </div>
+    </div>
+    <div class="feature__text reveal">
+      <span class="kicker">Главная компетенция</span>
+      <h2 class="section__title">Возвращаем жизнь<br>высоковольтным батареям</h2>
+      <p>Ошибка ВВБ — не приговор и не повод менять батарею целиком за космические деньги. Мы находим слабые ячейки на собственном стенде и восстанавливаем модуль точечно.</p>
+      <ul class="checklist">
+        <li>Дефектовка NiMH высоковольтных батарей</li>
+        <li>Подбор, замена и балансировка ячеек</li>
+        <li>Восстановление реальной ёмкости и запаса хода</li>
+        <li>Решение проблем перегрева и ошибок HV-системы</li>
+        <li>Гарантия на выполненные работы — 12 месяцев</li>
+      </ul>
+      <a href="#contacts" class="btn btn--primary">Узнать стоимость ремонта</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="analyzer reveal">
+      <div class="analyzer__intro">
+        <span class="kicker">Собственное оборудование</span>
+        <h3 class="analyzer__title">Программно-измерительный комплекс <span class="grad-text">— анализатор ВВБ</span></h3>
+        <p class="analyzer__lead">Диагностику высоковольтных батарей проводим на анализаторе полностью собственного, ручного производства. Теперь в новом <b>4-проводном исполнении</b> — по 2 пары проводов на каждый канал: измерительные и токовые цепи разнесены между собой для более точного измерения.</p>
+        <div class="analyzer__badge">
+          <b>0.01–0.03 В</b>
+          <span>погрешность измерения</span>
+        </div>
+      </div>
+
+      <div class="analyzer__cols">
+        <div class="analyzer__col">
+          <h4 class="analyzer__sub">Комплектация</h4>
+          <ul class="speclist">
+            <li>Основное устройство в пластиковом кейсе</li>
+            <li>Разрядный блок выносного исполнения — с технической возможностью изменения мощности разряда</li>
+            <li>Стандартный ток разряда: Prius 20/30 — 2.5&nbsp;А, RX400/450h — 4&nbsp;А</li>
+            <li>Силиконовые термостойкие провода (−50…+300&nbsp;°C)</li>
+            <li>Авиатехнические разъёмы GX16</li>
+          </ul>
+        </div>
+        <div class="analyzer__col">
+          <h4 class="analyzer__sub">Технические характеристики</h4>
+          <ul class="checklist">
+            <li>30 полностью независимых каналов — дифференцированная зарядка и разрядка по каждому</li>
+            <li>Modульная основа с возможностью замены отдельных канальных групп</li>
+            <li>Защита от переполюсовки — на программном уровне и в железе</li>
+            <li>Защита от короткого замыкания</li>
+            <li>Стабилизация и мониторинг тока, контроль напряжения</li>
+            <li>Контроль заряда по deltaV и заданным уставкам</li>
+            <li>Вся логика в железе: внезапное отключение ПК не повлияет на результат — анализатор отработает по уставкам</li>
+            <li>Автоматическая выгрузка результата в Excel — графики разряда и таблицы ёмкостей</li>
+            <li>Пошаговый просмотр всех этапов работы и исходные данные для своих диаграмм</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section product" id="controller">
+  <div class="container">
+    <div class="section__head reveal">
+      <span class="kicker kicker--amber">Собственная разработка и производство</span>
+      <h2 class="section__title">Контроллеры охлаждения ВВБ <span class="grad-text">для Toyota и Lexus</span></h2>
+      <p class="section__sub">Мы сами разрабатываем, паяем и прошиваем эти платы. Отгружаем по всей России — от Хабаровска до Москвы.</p>
+    </div>
+
+    <div class="why-ctrl reveal">
+      <div class="why-ctrl__media carousel" data-carousel data-lightbox>
+        <div class="carousel__track">
+          <a class="cslide" href="Img/contr_vb/ekran/photo_1_2026-06-15_17-45-05.jpg"><img src="Img/contr_vb/ekran/photo_1_2026-06-15_17-45-05.jpg" alt="Контроллер охлаждения ВВБ с экраном на торпедо" width="800" height="600" loading="lazy" decoding="async"></a>
+          <a class="cslide" href="Img/contr_vb/ekran/photo_2_2026-06-15_17-45-05.jpg"><img src="Img/contr_vb/ekran/photo_2_2026-06-15_17-45-05.jpg" alt="Экран контроллера — температура ВВБ" width="800" height="600" loading="lazy" decoding="async"></a>
+          <a class="cslide" href="Img/contr_vb/ekran/photo_3_2026-06-15_17-45-05.jpg"><img src="Img/contr_vb/ekran/photo_3_2026-06-15_17-45-05.jpg" alt="Установка контроллера в нишу торпедо" width="800" height="600" loading="lazy" decoding="async"></a>
+          <a class="cslide" href="Img/contr_vb/ekran/photo_4_2026-06-15_17-45-05.jpg"><img src="Img/contr_vb/ekran/photo_4_2026-06-15_17-45-05.jpg" alt="Контроллер охлаждения ВВБ — монтаж" width="800" height="600" loading="lazy" decoding="async"></a>
+          <a class="cslide" href="Img/contr_vb/ekran/654193222_18077116373575451_469688236145662950_n.jpg"><img src="Img/contr_vb/ekran/654193222_18077116373575451_469688236145662950_n.jpg" alt="Контроллер охлаждения ВВБ установлен" width="800" height="600" loading="lazy" decoding="async"></a>
+          <a class="cslide" href="Img/contr_vb/ekran/663270208_18179117038378854_9200910575011569287_n.jpg"><img src="Img/contr_vb/ekran/663270208_18179117038378854_9200910575011569287_n.jpg" alt="Дисплей контроллера в работе" width="800" height="600" loading="lazy" decoding="async"></a>
+        </div>
+        <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Предыдущее фото">‹</button>
+        <button class="carousel__btn carousel__btn--next" type="button" aria-label="Следующее фото">›</button>
+        <div class="carousel__dots" aria-hidden="true"></div>
+        <div class="charge" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+      </div>
+      <div class="why-ctrl__text">
+        <h3>Зачем нужен контроллер?</h3>
+        <p>Штатная система охлаждения ВВБ гибридов Toyota работает неэффективно: вентилятор не выходит на полную мощность, пока машина не наберёт скорость. Из-за этого батарея перегревается и рано деградирует — на части моделей уже к <b>100–120 тыс. км</b>.</p>
+        <p>Наш контроллер меняет алгоритм на эффективный — вентилятор включается уже с&nbsp;30&nbsp;°C:</p>
+        <div class="temp-steps">
+          <div class="temp-step"><b>30°</b><span>4-я скорость</span></div>
+          <div class="temp-step"><b>32°</b><span>5-я скорость</span></div>
+          <div class="temp-step"><b>34°</b><span>6-я скорость</span></div>
+        </div>
+        <p class="why-ctrl__note">Зимой — наоборот: если в салоне тепло, а батарея холодная, контроллер мягко прогревает ВВБ. Плюс watchdog (автоперезапуск), защита прошивки от чтения и низкое энергопотребление (0.06 А в работе).</p>
+      </div>
+    </div>
+
+    <div class="factbox reveal">
+      <div class="factbox__icon">!</div>
+      <div>
+        <b>Почему такой алгоритм заложен штатно?</b>
+        <p>Это не ошибка инженеров Toyota, а маркетинг. С 2012 года Toyota владеет 51% акций завода Panasonic по производству NiMH-батарей (СП Primearth) и заинтересована в продажах батарей на вторичном рынке. Запрограммированное старение в действии.</p>
+      </div>
+    </div>
+
+    <div class="price-cards">
+      <article class="pcard pcard--feat reveal">
+        <span class="pcard__tag">С экраном</span>
+        <div class="pcard__media carousel carousel--card" data-carousel data-lightbox>
+          <div class="carousel__track">
+            <a class="cslide" href="Img/contr_vb/ekran/photo_1_2026-06-15_17-45-05.jpg"><img src="Img/contr_vb/ekran/photo_1_2026-06-15_17-45-05.jpg" alt="Контроллер охлаждения ВВБ с экраном" width="600" height="450" loading="lazy" decoding="async"></a>
+            <a class="cslide" href="Img/contr_vb/ekran/photo_2_2026-06-15_17-45-05.jpg"><img src="Img/contr_vb/ekran/photo_2_2026-06-15_17-45-05.jpg" alt="Контроллер с экраном — дисплей" width="600" height="450" loading="lazy" decoding="async"></a>
+            <a class="cslide" href="Img/contr_vb/ekran/photo_3_2026-06-15_17-45-05.jpg"><img src="Img/contr_vb/ekran/photo_3_2026-06-15_17-45-05.jpg" alt="Контроллер с экраном — установка" width="600" height="450" loading="lazy" decoding="async"></a>
+            <a class="cslide" href="Img/contr_vb/ekran/photo_4_2026-06-15_17-45-05.jpg"><img src="Img/contr_vb/ekran/photo_4_2026-06-15_17-45-05.jpg" alt="Контроллер с экраном в салоне" width="600" height="450" loading="lazy" decoding="async"></a>
+            <a class="cslide" href="Img/contr_vb/ekran/photo_5_2026-06-15_17-45-05.jpg"><img src="Img/contr_vb/ekran/photo_5_2026-06-15_17-45-05.jpg" alt="Контроллер с экраном — крупный план" width="600" height="450" loading="lazy" decoding="async"></a>
+            <a class="cslide" href="Img/contr_vb/ekran/photo_6_2026-06-15_17-45-05.jpg"><img src="Img/contr_vb/ekran/photo_6_2026-06-15_17-45-05.jpg" alt="Контроллер с экраном — монтаж" width="600" height="450" loading="lazy" decoding="async"></a>
+          </div>
+          <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Предыдущее фото">‹</button>
+          <button class="carousel__btn carousel__btn--next" type="button" aria-label="Следующее фото">›</button>
+          <div class="carousel__dots" aria-hidden="true"></div>
+        </div>
+        <h3>Контроллер охлаждения ВВБ<br>для Toyota — с экраном</h3>
+        <p>Выводит на дисплей температуру салона, температуру ВВБ, режим вентилятора, температуру и обороты ДВС.</p>
+        <div class="pcard__price"><b>9 500 ₽</b><span>розница</span></div>
+        <div class="pcard__actions">
+          <a href="#contacts" class="btn btn--amber">Заказать</a>
+          <a href="https://my.cdek.ru/lkfl/delivery?utm_source=cdekru&utm_campaign=calc" target="_blank" rel="noopener" class="btn btn--cdek" aria-label="Купить с доставкой СДЭК"><img src="Img/cdek-logo.svg" alt="СДЭК" width="58" height="16"><span>доставка</span></a>
+        </div>
+      </article>
+
+      <article class="pcard reveal">
+        <span class="pcard__tag">В кнопку</span>
+        <div class="pcard__media carousel carousel--card" data-carousel data-lightbox>
+          <div class="carousel__track">
+            <a class="cslide" href="Img/contr_vb/v%20knopku/photo_1_2026-06-15_17-46-10.jpg"><img src="Img/contr_vb/v%20knopku/photo_1_2026-06-15_17-46-10.jpg" alt="Контроллер ВВБ — дисплей в штатной кнопке" width="600" height="450" loading="lazy" decoding="async"></a>
+            <a class="cslide" href="Img/contr_vb/v%20knopku/photo_2_2026-06-15_17-46-10.jpg"><img src="Img/contr_vb/v%20knopku/photo_2_2026-06-15_17-46-10.jpg" alt="Контроллер в кнопку — установка на панель" width="600" height="450" loading="lazy" decoding="async"></a>
+            <a class="cslide" href="Img/contr_vb/v%20knopku/photo_3_2026-06-15_17-46-10.jpg"><img src="Img/contr_vb/v%20knopku/photo_3_2026-06-15_17-46-10.jpg" alt="Контроллер в кнопку — экран температуры ВВБ" width="600" height="450" loading="lazy" decoding="async"></a>
+            <a class="cslide" href="Img/contr_vb/v%20knopku/photo_4_2026-06-15_17-46-10.jpg"><img src="Img/contr_vb/v%20knopku/photo_4_2026-06-15_17-46-10.jpg" alt="Контроллер в кнопку — стоковый вид" width="600" height="450" loading="lazy" decoding="async"></a>
+            <a class="cslide" href="Img/contr_vb/v%20knopku/photo_5_2026-06-15_17-46-10.jpg"><img src="Img/contr_vb/v%20knopku/photo_5_2026-06-15_17-46-10.jpg" alt="Контроллер в кнопку — крупный план" width="600" height="450" loading="lazy" decoding="async"></a>
+            <a class="cslide" href="Img/contr_vb/v%20knopku/photo_6_2026-06-15_17-46-10.jpg"><img src="Img/contr_vb/v%20knopku/photo_6_2026-06-15_17-46-10.jpg" alt="Контроллер в кнопку — в работе" width="600" height="450" loading="lazy" decoding="async"></a>
+          </div>
+          <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Предыдущее фото">‹</button>
+          <button class="carousel__btn carousel__btn--next" type="button" aria-label="Следующее фото">›</button>
+          <div class="carousel__dots" aria-hidden="true"></div>
+        </div>
+        <h3>Контроллер охлаждения ВВБ<br>для Toyota — в кнопку</h3>
+        <p>Дисплей встроен в штатную кнопку-заглушку на панели — максимально стоковый вид. Показывает температуру ВВБ и режим вентилятора.</p>
+        <div class="pcard__price"><b>7 500 ₽</b><span>розница</span></div>
+        <div class="pcard__actions">
+          <a href="#contacts" class="btn btn--outline">Заказать</a>
+          <a href="https://my.cdek.ru/lkfl/delivery?utm_source=cdekru&utm_campaign=calc" target="_blank" rel="noopener" class="btn btn--cdek" aria-label="Купить с доставкой СДЭК"><img src="Img/cdek-logo.svg" alt="СДЭК" width="58" height="16"><span>доставка</span></a>
+        </div>
+      </article>
+
+      <article class="pcard reveal">
+        <span class="pcard__tag">OBD · без экрана</span>
+        <div class="pcard__media carousel carousel--card" data-carousel data-lightbox>
+          <div class="carousel__track">
+            <a class="cslide" href="Img/contr_vb/bez_ekrana/photo_1_2026-06-15_17-46-43.jpg"><img src="Img/contr_vb/bez_ekrana/photo_1_2026-06-15_17-46-43.jpg" alt="Контроллер охлаждения ВВБ без экрана (OBD)" width="600" height="450" loading="lazy" decoding="async"></a>
+            <a class="cslide" href="Img/contr_vb/bez_ekrana/642998379_17878506837397679_9081981849025997251_n.jpg"><img src="Img/contr_vb/bez_ekrana/642998379_17878506837397679_9081981849025997251_n.jpg" alt="Контроллер без экрана — плата" width="600" height="450" loading="lazy" decoding="async"></a>
+            <a class="cslide" href="Img/contr_vb/bez_ekrana/photo_2023-07-24_19-02-21.jpg"><img src="Img/contr_vb/bez_ekrana/photo_2023-07-24_19-02-21.jpg" alt="Контроллер без экрана — установка" width="600" height="450" loading="lazy" decoding="async"></a>
+            <a class="cslide" href="Img/contr_vb/bez_ekrana/photo_2023-08-22_12-59-54.jpg"><img src="Img/contr_vb/bez_ekrana/photo_2023-08-22_12-59-54.jpg" alt="Контроллер без экрана в OBD-порту" width="600" height="450" loading="lazy" decoding="async"></a>
+          </div>
+          <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Предыдущее фото">‹</button>
+          <button class="carousel__btn carousel__btn--next" type="button" aria-label="Следующее фото">›</button>
+          <div class="carousel__dots" aria-hidden="true"></div>
+        </div>
+        <h3>Контроллер охлаждения ВВБ<br>для Toyota — без экрана</h3>
+        <p>Подключается в OBD-порт и просто работает, как ELM327. Аккуратно и незаметно, без вывода на дисплей.</p>
+        <div class="pcard__price"><b>6 500 ₽</b><span>розница</span></div>
+        <div class="pcard__actions">
+          <a href="#contacts" class="btn btn--outline">Заказать</a>
+          <a href="https://my.cdek.ru/lkfl/delivery?utm_source=cdekru&utm_campaign=calc" target="_blank" rel="noopener" class="btn btn--cdek" aria-label="Купить с доставкой СДЭК"><img src="Img/cdek-logo.svg" alt="СДЭК" width="58" height="16"><span>доставка</span></a>
+        </div>
+      </article>
+
+      <article class="pcard reveal">
+        <span class="pcard__tag">Для свапа</span>
+        <div class="pcard__media carousel carousel--card" data-carousel data-lightbox>
+          <div class="carousel__track">
+            <a class="cslide" href="Img/cntr-pompa/photo_1_2026-06-15_17-56-29.jpg"><img src="Img/cntr-pompa/photo_1_2026-06-15_17-56-29.jpg" alt="Контроллер управления помпой" width="600" height="450" loading="lazy" decoding="async"></a>
+            <a class="cslide" href="Img/cntr-pompa/photo_2_2026-06-15_17-56-29.jpg"><img src="Img/cntr-pompa/photo_2_2026-06-15_17-56-29.jpg" alt="Контроллер помпы — плата" width="600" height="450" loading="lazy" decoding="async"></a>
+            <a class="cslide" href="Img/cntr-pompa/photo_3_2026-06-15_17-56-29.jpg"><img src="Img/cntr-pompa/photo_3_2026-06-15_17-56-29.jpg" alt="Контроллер управления помпой охлаждения" width="600" height="450" loading="lazy" decoding="async"></a>
+          </div>
+          <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Предыдущее фото">‹</button>
+          <button class="carousel__btn carousel__btn--next" type="button" aria-label="Следующее фото">›</button>
+          <div class="carousel__dots" aria-hidden="true"></div>
+        </div>
+        <h3>Контроллер управления помпой<br>«для свапа»</h3>
+        <p>Управляет помпой охлаждения при свап-проектах. Наша разработка под нестандартные сборки.</p>
+        <div class="pcard__price"><b>6 500 ₽</b><span>розница</span></div>
+        <div class="pcard__actions">
+          <a href="#contacts" class="btn btn--outline">Заказать</a>
+          <a href="https://my.cdek.ru/lkfl/delivery?utm_source=cdekru&utm_campaign=calc" target="_blank" rel="noopener" class="btn btn--cdek" aria-label="Купить с доставкой СДЭК"><img src="Img/cdek-logo.svg" alt="СДЭК" width="58" height="16"><span>доставка</span></a>
+        </div>
+      </article>
+    </div>
+
+    <div class="models reveal">
+      <h3 class="models__title">Поддерживаемые модели</h3>
+      <p class="models__hint">Версия с экраном выпускается в трёх вариантах установки. Версия без экрана (OBD) — для всех современных гибридов Toyota / Lexus.</p>
+
+      <div class="acc" id="modelsAcc">
+        <div class="acc__item">
+          <button class="acc__head" aria-expanded="false">С экраном — в монетницу <i></i></button>
+          <div class="acc__body"><p>Prius 41 / Prius V · Sai / HS250h (дорестайл, штатная монетница на центральной консоли).</p></div>
+        </div>
+        <div class="acc__item">
+          <button class="acc__head" aria-expanded="false">С экраном — в ETC <i></i></button>
+          <div class="acc__body"><p>Prius 30 / 50 · C-HR · Crown 210 · Noah / Voxy / Esquire · Estima / Alphard 20 / 30.</p></div>
+        </div>
+        <div class="acc__item">
+          <button class="acc__head" aria-expanded="false">Универсальный с экраном <i></i></button>
+          <div class="acc__body"><p>Prius 20 · Aqua / Fielder / Yaris / Axio · CT200h · Camry 55 · Crown 220 Hybrid · Harrier / NX300h · GS450h / ES300h.</p></div>
+        </div>
+        <div class="acc__item">
+          <button class="acc__head" aria-expanded="false">Без экрана (OBD) — все современные Toyota / Lexus <i></i></button>
+          <div class="acc__body"><p>Prius 20/30/40/41 · Prius 50 / C-HR · Aqua / Fielder / Yaris / Axio · CT200h · Camry / Harrier / Crown Hybrid · Sai / HS250h · GS450h / LS600h · Estima / Alphard 20/30 · Noah / Voxy / Esquire · Harrier / NX300h · GS450h / ES300h · RX400h / RX450h · RAV4 Hybrid · UX250h · Venza HV.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="geo reveal">
+      <div class="geo__text">
+        <h3>Где купить</h3>
+        <p>В Хабаровске напрямую и у наших представителей в регионах:</p>
+        <div class="geo__cities">
+          <span>Владивосток</span><span>Уссурийск</span><span>Комсомольск-на-Амуре</span>
+          <span>Биробиджан</span><span>Благовещенск</span><span>Чита</span><span>Иркутск</span>
+          <span>Улан-Удэ</span><span>Новосибирск</span><span>Барнаул</span><span>Москва</span><span>и другие</span>
+        </div>
+      </div>
+      <div class="geo__cta">
+        <p>Работаем оптом и приглашаем представителей в новые регионы.</p>
+        <a href="#contacts" class="btn btn--amber">Стать дилером</a>
+        <a href="#contacts" class="btn btn--outline">Опт — цена по запросу</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section gallery" id="install">
+  <div class="container">
+    <div class="section__head reveal">
+      <span class="kicker">Примеры работ</span>
+      <h2 class="section__title">Установка контроллеров</h2>
+      <p class="section__sub">Аккуратный монтаж в штатные места: монетница, ETC, ниши торпедо. Экран показывает температуру ВВБ и режим вентилятора в реальном времени.</p>
+    </div>
+
+    <div class="grid-gallery" data-gallery>
+      <a class="ph ph--lg" href="Img/contr_vb/ekran/photo_5_2026-06-15_17-45-05.jpg"><img src="Img/contr_vb/ekran/photo_5_2026-06-15_17-45-05.jpg" alt="Контроллер с экраном на торпедо" loading="lazy" decoding="async"><span>На торпедо</span></a>
+      <a class="ph" href="Img/contr_vb/ekran/photo_7_2026-06-15_17-45-05.jpg"><img src="Img/contr_vb/ekran/photo_7_2026-06-15_17-45-05.jpg" alt="Экран контроллера, замер ВВБ" loading="lazy" decoding="async"><span>HV Batt</span></a>
+      <a class="ph" href="Img/contr_vb/v%20knopku/photo_3_2026-06-15_17-46-10.jpg"><img src="Img/contr_vb/v%20knopku/photo_3_2026-06-15_17-46-10.jpg" alt="Контроллер в кнопку на панели" loading="lazy" decoding="async"><span>В кнопку</span></a>
+      <a class="ph" href="Img/contr_vb/bez_ekrana/photo_1_2026-06-15_17-46-43.jpg"><img src="Img/contr_vb/bez_ekrana/photo_1_2026-06-15_17-46-43.jpg" alt="Контроллер без экрана в OBD" loading="lazy" decoding="async"><span>OBD</span></a>
+      <a class="ph" href="Img/contr_vb/ekran/photo_8_2026-06-15_17-45-05.jpg"><img src="Img/contr_vb/ekran/photo_8_2026-06-15_17-45-05.jpg" alt="Контроллер в салоне" loading="lazy" decoding="async"><span>В салоне</span></a>
+      <a class="ph ph--wide" href="Img/cntr-pompa/photo_2_2026-06-15_17-56-29.jpg"><img src="Img/cntr-pompa/photo_2_2026-06-15_17-56-29.jpg" alt="Контроллер помпы для свапа" loading="lazy" decoding="async"><span>Помпа для свапа</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="section brands" id="brands">
+  <div class="container">
+    <div class="section__head reveal">
+      <span class="kicker">С чем работаем</span>
+      <h2 class="section__title">Приоритетные марки гибридов</h2>
+    </div>
+    <div class="marquee reveal">
+      <div class="marquee__track">
+        <span>Toyota</span><i>·</i><span>Lexus</span><i>·</i><span>Honda</span><i>·</i><span>Nissan</span><i>·</i><span>BYD</span><i>·</i><span>Li Auto</span><i>·</i><span>Zeekr</span><i>·</i><span>Voyah</span><i>·</i>
+        <span>Toyota</span><i>·</i><span>Lexus</span><i>·</i><span>Honda</span><i>·</i><span>Nissan</span><i>·</i><span>BYD</span><i>·</i><span>Li Auto</span><i>·</i><span>Zeekr</span><i>·</i><span>Voyah</span><i>·</i>
+      </div>
+    </div>
+    <p class="brands__note reveal">Toyota · Lexus · Honda · Nissan · китайские гибриды и электромобили — Prius, Aqua, Vellfire, Alphard, C-HR, Camry Hybrid и другие.</p>
+  </div>
+</section>
+
+<section class="section why" id="why">
+  <div class="container">
+    <div class="section__head reveal">
+      <span class="kicker">Почему EV Service</span>
+      <h2 class="section__title">Опыт, которому доверяют</h2>
+    </div>
+    <div class="why__grid">
+      <div class="why__item reveal"><b>Узкая специализация</b><p>Высоковольтные системы и гибриды — наш ежедневный профиль, а не «попробуем разобраться».</p></div>
+      <div class="why__item reveal"><b>Своя электроника</b><p>Разрабатываем, паяем и прошиваем контроллеры сами — понимаем HV-системы до уровня платы.</p></div>
+      <div class="why__item reveal"><b>Глубокий чип-тюнинг</b><p>Перепрошивка ЭБУ, программное удаление EGR, правка топливных карт, своя база данных по охлаждению гибридов.</p></div>
+      <div class="why__item reveal"><b>Гарантия и честность</b><p>Смета до начала работ, гарантия 12 месяцев на ремонт ВВБ. Чиним точечно, а не «меняем всё».</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section gallery" id="gallery">
+  <div class="container">
+    <div class="section__head reveal">
+      <span class="kicker">Портфолио</span>
+      <h2 class="section__title">Наш цех и работы</h2>
+      <p class="section__sub">Ремонт, тюнинг, кастом — культура сервиса, которую видно с порога.</p>
+      <p class="section__sub">4 поста для обслуживания авто, 2 подъёмника, лаборатория на 2 этаже для работы с ВВБ.</p>
+    </div>
+
+    <div class="carousel carousel--rail reveal" data-carousel data-lightbox>
+      <div class="carousel__track">
+        <a class="cslide" href="Img/Screenshot_2.jpg"><img src="Img/Screenshot_2.jpg" alt="Аэрография на капоте" loading="lazy" decoding="async"></a>
+        <a class="cslide" href="Img/Screenshot_5.jpg"><img src="Img/Screenshot_5.jpg" alt="Кастомный проект" loading="lazy" decoding="async"></a>
+        <a class="cslide" href="Img/photo_2023-07-30_11-38-12.jpg"><img src="Img/photo_2023-07-30_11-38-12.jpg" alt="Toyota в сервисе" loading="lazy" decoding="async"></a>
+        <a class="cslide" href="Img/photo_2023-03-24_19-13-29.jpg"><img src="Img/photo_2023-03-24_19-13-29.jpg" alt="Сервисный цех" loading="lazy" decoding="async"></a>
+        <a class="cslide" href="Img/photo_2023-08-22_12-58-28.jpg"><img src="Img/photo_2023-08-22_12-58-28.jpg" alt="Работа в цеху" loading="lazy" decoding="async"></a>
+        <a class="cslide" href="Img/photo_2023-08-21_23-08-07.jpg"><img src="Img/photo_2023-08-21_23-08-07.jpg" alt="Гибрид на обслуживании" loading="lazy" decoding="async"></a>
+        <a class="cslide" href="Img/photo_2023-08-21_23-08-10.jpg"><img src="Img/photo_2023-08-21_23-08-10.jpg" alt="Диагностика автомобиля" loading="lazy" decoding="async"></a>
+        <a class="cslide" href="Img/photo_2023-08-21_23-08-12.jpg"><img src="Img/photo_2023-08-21_23-08-12.jpg" alt="Ремонтная зона" loading="lazy" decoding="async"></a>
+        <a class="cslide" href="Img/photo_2023-08-21_23-08-16.jpg"><img src="Img/photo_2023-08-21_23-08-16.jpg" alt="Подъёмник в работе" loading="lazy" decoding="async"></a>
+        <a class="cslide" href="Img/photo_2023-08-21_23-08-18.jpg"><img src="Img/photo_2023-08-21_23-08-18.jpg" alt="Цех EV Service" loading="lazy" decoding="async"></a>
+        <a class="cslide" href="Img/522630473_18143081752405774_3872138007277755053_n.jpg"><img src="Img/522630473_18143081752405774_3872138007277755053_n.jpg" alt="Работы EV Service" loading="lazy" decoding="async"></a>
+        <a class="cslide" href="Img/658938991_18539263630066740_7769345448383389661_n.jpg"><img src="Img/658938991_18539263630066740_7769345448383389661_n.jpg" alt="Проект EV Service" loading="lazy" decoding="async"></a>
+      </div>
+      <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Предыдущие фото">‹</button>
+      <button class="carousel__btn carousel__btn--next" type="button" aria-label="Следующие фото">›</button>
+      <div class="carousel__dots" aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section reviews" id="reviews">
+  <div class="container reviews__inner reveal">
+    <div class="reviews__stars" aria-hidden="true">★★★★★</div>
+    <h2 class="section__title">Нам доверяют — и пишут об этом</h2>
+    <p>Реальные отзывы клиентов EV Service на 2GIS. Только честные оценки.</p>
+    <a href="https://go.2gis.com/4UUpm" target="_blank" rel="noopener" class="btn btn--primary">Читать отзывы на 2GIS</a>
+  </div>
+</section>
+
+<section class="section faq" id="faq">
+  <div class="container">
+    <div class="section__head reveal">
+      <span class="kicker">Частые вопросы</span>
+      <h2 class="section__title">Коротко о главном</h2>
+    </div>
+    <div class="acc acc--faq reveal" id="faqAcc">
+      <div class="acc__item">
+        <button class="acc__head" aria-expanded="false">Зачем нужен контроллер охлаждения ВВБ? <i></i></button>
+        <div class="acc__body"><p>Штатное охлаждение батареи гибридов Toyota неэффективно, из-за чего ВВБ перегревается и рано деградирует. Контроллер включает вентилятор раньше (уже с 30 °C) и продлевает жизнь батареи.</p></div>
+      </div>
+      <div class="acc__item">
+        <button class="acc__head" aria-expanded="false">Чем версия с экраном отличается от версии без экрана? <i></i></button>
+        <div class="acc__body"><p>С экраном — показывает температуру салона, температуру ВВБ, режим вентилятора, температуру и обороты ДВС. Без экрана (OBD) — просто подключается в порт и работает незаметно. Алгоритм охлаждения одинаковый.</p></div>
+      </div>
+      <div class="acc__item">
+        <button class="acc__head" aria-expanded="false">Подойдёт ли контроллер к моей машине? <i></i></button>
+        <div class="acc__body"><p>Версия без экрана поддерживает все современные гибриды Toyota и Lexus. Версия с экраном — под конкретные модели (см. раздел «Поддерживаемые модели»). Если сомневаетесь — напишите нам марку и год, подскажем.</p></div>
+      </div>
+      <div class="acc__item">
+        <button class="acc__head" aria-expanded="false">Вы отправляете в другие города? <i></i></button>
+        <div class="acc__body"><p>Да. Отгружаем по всей России, есть представители в крупных городах от Владивостока до Москвы. Заказ и доставку обсуждаем в мессенджере.</p></div>
+      </div>
+      <div class="acc__item">
+        <button class="acc__head" aria-expanded="false">Даёте ли гарантию на ремонт ВВБ? <i></i></button>
+        <div class="acc__body"><p>Да, гарантия на ремонт высоковольтной батареи — 12 месяцев. Смету согласовываем до начала работ.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section contacts" id="contacts">
+  <div class="container contacts__grid">
+    <div class="contacts__info reveal">
+      <span class="kicker">Связаться</span>
+      <h2 class="section__title">Позвоните или напишите</h2>
+      <p>Опишите задачу — сориентируем по срокам и стоимости. По контроллерам ответим про доставку, опт и установку.</p>
+
+      <div class="contacts__people">
+        <div class="person">
+          <span class="person__name">Евгений</span>
+          <div class="person__btns">
+            <a href="tel:+79626790356" class="cbtn cbtn--call" aria-label="Позвонить Евгению">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+              +7 962 679-03-56
+            </a>
+            <a href="https://wa.me/79626790356" target="_blank" rel="noopener" class="cbtn cbtn--wa" aria-label="WhatsApp Евгению">WhatsApp</a>
+            <a href="https://t.me/EvService_Evgeniy" target="_blank" rel="noopener" class="cbtn cbtn--tg" aria-label="Telegram Евгению">Telegram</a>
+          </div>
+        </div>
+        <div class="person">
+          <span class="person__name">Дмитрий</span>
+          <div class="person__btns">
+            <a href="tel:+79241005450" class="cbtn cbtn--call" aria-label="Позвонить Дмитрию">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+              +7 924 100-54-50
+            </a>
+            <a href="https://wa.me/79241005450" target="_blank" rel="noopener" class="cbtn cbtn--wa" aria-label="WhatsApp Дмитрию">WhatsApp</a>
+            <a href="https://t.me/EvService_Dmitriy" target="_blank" rel="noopener" class="cbtn cbtn--tg" aria-label="Telegram Дмитрию">Telegram</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contacts__card reveal">
+      <ul class="contacts__list">
+        <li>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>г. Хабаровск, ул. Чукотская, 18</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <span>Ежедневно с 11:00 до 17:30</span>
+        </li>
+      </ul>
+      <div class="contacts__map">
+        <iframe
+          title="Карта проезда — Хабаровск, Чукотская 18"
+          src="https://yandex.ru/map-widget/v1/?text=Хабаровск%2C%20улица%20Чукотская%2C%2018&z=16"
+          width="100%" height="100%" frameborder="0" loading="lazy"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <div class="logo logo--footer">
+      <span class="logo__mark" aria-hidden="true"><svg viewBox="0 0 48 32" width="38" height="25"><use href="#evlogo"/></svg></span>
+      <span class="logo__text">EV<span>Service</span></span>
+    </div>
+    <p class="footer__tag">Высоковольтный сервис гибридов · Хабаровск · ремонт ВВБ · контроллеры охлаждения</p>
+    <nav class="footer__nav">
+      <a href="#services">Услуги</a>
+      <a href="#controller">Контроллеры</a>
+      <a href="#install">Установка</a>
+      <a href="#faq">Вопросы</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+    <div class="footer__soc">
+      <a href="https://www.instagram.com/ev_service/" target="_blank" rel="noopener" aria-label="Instagram EV Service" class="soc">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+      </a>
+    </div>
+    <p class="footer__copy">© <span id="year">2026</span> EV Service, Хабаровск. Все права защищены.</p>
+    <p class="footer__author">Сайт подготовил <strong>Дмитрий Фролов</strong> · <a href="https://t.me/Dmitrii_khv27" target="_blank" rel="noopener">@Dmitrii_khv27</a></p>
+  </div>
+</footer>
+
+<a href="tel:+79626790356" class="fab-call" aria-label="Позвонить в EV Service">
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+</a>
+
+<div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Просмотр изображения">
+  <button class="lightbox__close" aria-label="Закрыть">×</button>
+  <button class="lightbox__nav lightbox__nav--prev" aria-label="Предыдущее фото" hidden>‹</button>
+  <img src="" alt="">
+  <button class="lightbox__nav lightbox__nav--next" aria-label="Следующее фото" hidden>›</button>
+  <span class="lightbox__counter" aria-hidden="true"></span>
+  <span class="lightbox__caption"></span>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="evlogo" viewBox="0 0 48 32">
+      <path d="M30 3a13 13 0 0 1 11 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+      <path d="M33 12l7-4-3 7z" fill="currentColor"/>
+      <path d="M4 24l3-8a4 4 0 0 1 3.7-2.6h16.6A4 4 0 0 1 31 15l4 4 7 1.4a2 2 0 0 1 1.6 2v2.6H40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+      <path d="M4 24h7" fill="none" stroke="currentColor" stroke-width="2.2"/>
+      <circle cx="15" cy="25" r="3.4" fill="none" stroke="currentColor" stroke-width="2.2"/>
+      <circle cx="34" cy="25" r="3.4" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    </symbol>
+  </defs>
+</svg>
+
+<script src="js/main-v2.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const canvas = document.getElementById('teslaLayer');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  // Старт из центра экрана
+  const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+  window.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  });
+
+  // Физика и пропорции Tesla Model Y
+  const car = {
+    x: window.innerWidth / 2,
+    y: window.innerHeight / 2,
+    vx: 0,
+    vy: 0,
+    angle: 0,
+    targetAngle: 0,
+    speed: 0,
+    maxSpeed: 3.75,     // Скорость преследования снижена вдвое
+    accel: 0.09,
+    friction: 0.94,     
+    turnSpeed: 0.09,    // Плавность вхождения в поворот
+    isBraking: false,
+    width: 48,          // Пропорциональные габариты
+    height: 23          
+  };
+
+  const trail = [];
+  const maxTrailLen = 12;
+
+  // Препятствия: текст и блоки страницы — машинка не может сквозь них проехать
+  const OBST_SEL = 'h1,h2,h3,h4,.btn,.card,.pcard,.stat,.why__item,.acc__item,' +
+    '.factbox,.temp-step,.section__title,.section__sub,.kicker,.eyebrow,.geo__cities span,.pcard__price';
+  let obstacles = [];
+  function refreshObstacles() {
+    const vh = window.innerHeight, vw = window.innerWidth;
+    obstacles = [];
+    document.querySelectorAll(OBST_SEL).forEach((el) => {
+      const r = el.getBoundingClientRect();
+      if (r.width && r.height && r.bottom > 0 && r.top < vh && r.right > 0 && r.left < vw) {
+        obstacles.push({ left: r.left, top: r.top, right: r.right, bottom: r.bottom });
+      }
+    });
+  }
+  refreshObstacles();
+  let obstScheduled = false;
+  function scheduleRefresh() {
+    if (obstScheduled) return;
+    obstScheduled = true;
+    requestAnimationFrame(() => { obstScheduled = false; refreshObstacles(); });
+  }
+  window.addEventListener('scroll', scheduleRefresh, { passive: true });
+  window.addEventListener('resize', scheduleRefresh);
+  window.addEventListener('load', refreshObstacles);
+
+  const COLLIDE_R = car.height * 0.55;
+  function blocked(cx, cy) {
+    for (let i = 0; i < obstacles.length; i++) {
+      const o = obstacles[i];
+      const nx = cx < o.left ? o.left : (cx > o.right ? o.right : cx);
+      const ny = cy < o.top ? o.top : (cy > o.bottom ? o.bottom : cy);
+      const dx = cx - nx, dy = cy - ny;
+      if (dx * dx + dy * dy < COLLIDE_R * COLLIDE_R) return true;
+    }
+    return false;
+  }
+
+  function animate() {
+    requestAnimationFrame(animate);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const dx = mouse.x - car.x;
+    const dy = mouse.y - car.y;
+    const distance = Math.hypot(dx, dy);
+
+    // Логика торможения и активации стоп-сигналов
+    if (distance < 25) {
+      car.isBraking = car.speed > 0.6;
+      car.speed *= 0.7; 
+    } else {
+      car.isBraking = false;
+      car.speed = Math.min(car.speed + car.accel, car.maxSpeed);
+      
+      // Снижение заноса на экстремальных углах
+      const angleDiff = Math.abs(Math.atan2(dy, dx) - car.angle);
+      if (angleDiff > 0.5) car.speed *= 0.94;
+    }
+
+    if (distance > 5) {
+      car.targetAngle = Math.atan2(dy, dx);
+    }
+
+    let diff = car.targetAngle - car.angle;
+    while (diff < -Math.PI) diff += Math.PI * 2;
+    while (diff > Math.PI) diff -= Math.PI * 2;
+    car.angle += diff * car.turnSpeed;
+
+    car.vx = Math.cos(car.angle) * car.speed;
+    car.vy = Math.sin(car.angle) * car.speed;
+
+    // Коллизии с текстом/блоками. Если машинка уже внутри блока — даём выехать.
+    if (blocked(car.x, car.y)) {
+      car.x += car.vx;
+      car.y += car.vy;
+    } else {
+      let moved = false;
+      if (!blocked(car.x + car.vx, car.y)) { car.x += car.vx; moved = true; }
+      else car.speed *= 0.5;
+      if (!blocked(car.x, car.y + car.vy)) { car.y += car.vy; moved = true; }
+      else car.speed *= 0.5;
+      if (!moved) { car.speed *= 0.4; car.angle += 0.25; car.isBraking = true; }
+    }
+
+    // Световой шлейф
+    if (car.speed > 1) {
+      trail.push({ x: car.x, y: car.y, angle: car.angle });
+      if (trail.length > maxTrailLen) trail.shift();
+    } else if (trail.length > 0) {
+      trail.shift();
+    }
+
+    // Рендеринг неонового следа
+    ctx.save();
+    trail.forEach((p, idx) => {
+      const alpha = (idx / trail.length) * 0.12;
+      ctx.fillStyle = `rgba(25, 227, 255, ${alpha})`;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, car.height / 1.8, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    ctx.restore();
+
+    // ОТРИСОВКА КОРПУСА TESLA MODEL Y
+    ctx.save();
+    ctx.translate(car.x, car.y);
+    ctx.rotate(car.angle);
+
+    const w = car.width, h = car.height;
+    const rr = (x, y, bw, bh, r) => {
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(x, y, bw, bh, r);
+      else ctx.rect(x, y, bw, bh);
+    };
+
+    // свет фар — два световых конуса вперёд
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    [-h * 0.3, h * 0.3].forEach((oy) => {
+      const g = ctx.createLinearGradient(w * 0.5, 0, w * 0.5 + 80, 0);
+      g.addColorStop(0, 'rgba(200,240,255,0.32)');
+      g.addColorStop(0.6, 'rgba(190,235,255,0.10)');
+      g.addColorStop(1, 'rgba(190,235,255,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.moveTo(w * 0.47, oy - h * 0.14);
+      ctx.lineTo(w * 0.5 + 82, oy - h * 0.95);
+      ctx.lineTo(w * 0.5 + 82, oy + h * 0.95);
+      ctx.lineTo(w * 0.47, oy + h * 0.14);
+      ctx.closePath();
+      ctx.fill();
+    });
+    ctx.restore();
+
+    // мягкая тень под кузовом
+    ctx.save();
+    ctx.translate(-2, 4);
+    ctx.shadowColor = 'rgba(0,0,0,0.5)';
+    ctx.shadowBlur = 16;
+    ctx.fillStyle = 'rgba(0,0,0,0.5)';
+    ctx.beginPath();
+    ctx.moveTo(w * 0.5, -h * 0.35);
+    ctx.quadraticCurveTo(w * 0.55, 0, w * 0.5, h * 0.35);
+    ctx.quadraticCurveTo(w * 0.2, h * 0.48, -w * 0.3, h * 0.45);
+    ctx.quadraticCurveTo(-w * 0.52, h * 0.3, -w * 0.5, 0);
+    ctx.quadraticCurveTo(-w * 0.52, -h * 0.3, -w * 0.3, -h * 0.45);
+    ctx.quadraticCurveTo(w * 0.2, -h * 0.48, w * 0.5, -h * 0.35);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+
+    // колёса в арках (под кузовом)
+    ctx.fillStyle = '#0b0d10';
+    [[w * 0.28, -h * 0.5], [-w * 0.34, -h * 0.5], [w * 0.28, h * 0.5 - h * 0.18], [-w * 0.34, h * 0.5 - h * 0.18]]
+      .forEach(([wx, wy]) => { rr(wx, wy, w * 0.18, h * 0.18, 2); ctx.fill(); });
+
+    // силуэт кузова — металлический градиент
+    const bodyPath = () => {
+      ctx.beginPath();
+      ctx.moveTo(w * 0.5, -h * 0.35);
+      ctx.quadraticCurveTo(w * 0.55, 0, w * 0.5, h * 0.35);
+      ctx.quadraticCurveTo(w * 0.2, h * 0.48, -w * 0.3, h * 0.45);
+      ctx.quadraticCurveTo(-w * 0.52, h * 0.3, -w * 0.5, 0);
+      ctx.quadraticCurveTo(-w * 0.52, -h * 0.3, -w * 0.3, -h * 0.45);
+      ctx.quadraticCurveTo(w * 0.2, -h * 0.48, w * 0.5, -h * 0.35);
+      ctx.closePath();
+    };
+    const paint = ctx.createLinearGradient(0, -h * 0.5, 0, h * 0.5);
+    paint.addColorStop(0, '#2a343d');
+    paint.addColorStop(0.45, '#3a4753');
+    paint.addColorStop(0.55, '#2c373f');
+    paint.addColorStop(1, '#0f1418');
+    bodyPath();
+    ctx.fillStyle = paint; ctx.fill();
+    ctx.lineWidth = 1.4; ctx.strokeStyle = '#445260'; ctx.stroke();
+
+    // продольная осевая линия капота + складки
+    ctx.strokeStyle = 'rgba(150,170,190,0.28)'; ctx.lineWidth = 0.8;
+    ctx.beginPath(); ctx.moveTo(w * 0.46, 0); ctx.lineTo(w * 0.28, 0); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(w * 0.3, -h * 0.34); ctx.lineTo(-w * 0.46, -h * 0.28); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(w * 0.3, h * 0.34); ctx.lineTo(-w * 0.46, h * 0.28); ctx.stroke();
+
+    // зеркала заднего вида
+    ctx.fillStyle = '#222c35';
+    rr(w * 0.18, -h * 0.5 - 2, 4, 3, 1.2); ctx.fill();
+    rr(w * 0.18, h * 0.5 - 1, 4, 3, 1.2); ctx.fill();
+
+    // лобовое стекло
+    ctx.fillStyle = '#0a0e12';
+    ctx.beginPath();
+    ctx.moveTo(w * 0.28, -h * 0.3);
+    ctx.quadraticCurveTo(w * 0.34, 0, w * 0.28, h * 0.3);
+    ctx.lineTo(w * 0.12, h * 0.26);
+    ctx.lineTo(w * 0.12, -h * 0.26);
+    ctx.closePath(); ctx.fill();
+
+    // панорамная стеклянная крыша
+    ctx.fillStyle = '#070a0d';
+    ctx.strokeStyle = '#1e2630'; ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(w * 0.1, -h * 0.27);
+    ctx.lineTo(-w * 0.16, -h * 0.27);
+    ctx.lineTo(-w * 0.16, h * 0.27);
+    ctx.lineTo(w * 0.1, h * 0.27);
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+
+    // заднее стекло
+    ctx.fillStyle = '#0a0e12';
+    ctx.beginPath();
+    ctx.moveTo(-w * 0.18, -h * 0.26);
+    ctx.quadraticCurveTo(-w * 0.3, 0, -w * 0.18, h * 0.26);
+    ctx.lineTo(-w * 0.34, h * 0.22);
+    ctx.lineTo(-w * 0.34, -h * 0.22);
+    ctx.closePath(); ctx.fill();
+
+    // блик на лобовом стекле
+    ctx.fillStyle = 'rgba(25,227,255,0.10)';
+    ctx.beginPath();
+    ctx.moveTo(w * 0.26, -h * 0.24);
+    ctx.quadraticCurveTo(w * 0.31, 0, w * 0.26, h * 0.24);
+    ctx.lineTo(w * 0.15, h * 0.2);
+    ctx.lineTo(w * 0.15, -h * 0.2);
+    ctx.closePath(); ctx.fill();
+
+    // светодиодные передние фары (свечение)
+    ctx.save();
+    ctx.shadowColor = '#bfeaff'; ctx.shadowBlur = 9;
+    ctx.fillStyle = '#ffffff';
+    rr(w * 0.46, -h * 0.34, 2.4, h * 0.22, 1.2); ctx.fill();
+    rr(w * 0.46, h * 0.12, 2.4, h * 0.22, 1.2); ctx.fill();
+    ctx.restore();
+
+    // задний сплошной LED-фонарь (красная полоса, ярче при торможении)
+    ctx.save();
+    if (car.isBraking) { ctx.shadowColor = '#ff3b30'; ctx.shadowBlur = 16; ctx.fillStyle = '#ff5a50'; }
+    else { ctx.shadowColor = '#ff3b30'; ctx.shadowBlur = 6; ctx.fillStyle = '#b51b15'; }
+    rr(-w * 0.5, -h * 0.3, 2.6, h * 0.6, 1.3); ctx.fill();
+    ctx.restore();
+
+    ctx.restore();
+  }
+
+  animate();
+});
+</script>
+</body>
+</html>
