@@ -313,8 +313,9 @@ body.no-scroll .fab-call{opacity:0;pointer-events:none}
 }
 
 /* ---------- reveal-анимации ---------- */
-.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
-.reveal.is-in{opacity:1;transform:none}
+.reveal{opacity:1;transform:none}
+.js-ready .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.js-ready .reveal.is-in{opacity:1;transform:none}
 /* оркестрованный вход hero (staggered) */
 .hero__inner .reveal{transition-delay:0ms}
 .hero__inner .eyebrow.is-in{transition-delay:.05s}
@@ -419,7 +420,7 @@ body.no-scroll .fab-call{opacity:0;pointer-events:none}
 .carousel{position:relative}
 .carousel__track{
   display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;
-  scrollbar-width:none;-ms-overflow-style:none;cursor:grab;touch-action:pan-y;
+  scrollbar-width:none;-ms-overflow-style:none;cursor:grab;touch-action:pan-x pan-y;
 }
 .carousel__track::-webkit-scrollbar{display:none}
 .carousel__track.is-drag{cursor:grabbing;scroll-behavior:auto;scroll-snap-type:none}
@@ -521,7 +522,7 @@ body.no-scroll .fab-call{opacity:0;pointer-events:none}
   .nav.is-open{
     display:flex;flex-direction:column;gap:0;position:fixed;top:72px;left:0;right:0;
     background:rgba(7,8,10,.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);
-    padding:8px 24px 20px;
+    padding:8px 24px 20px;max-height:calc(100dvh - 72px);overflow-y:auto;
   }
   .nav.is-open a{padding:15px 0;border-bottom:1px solid var(--line);font-size:17px}
   .feature__grid,.contacts__grid,.why-ctrl,.geo{grid-template-columns:1fr;gap:34px}
@@ -557,5 +558,5 @@ body.no-scroll .fab-call{opacity:0;pointer-events:none}
 
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important;scroll-behavior:auto!important}
-  .reveal{opacity:1;transform:none}
+  .js-ready .reveal{opacity:1;transform:none}
 }

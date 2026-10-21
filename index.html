@@ -38,11 +38,9 @@
     z-index: 0;
   }
 
-  .site-header, 
   main, 
   .container, 
-  .btn,
-  .fab-call {
+  .btn {
     position: relative;
     z-index: 2;
   }
@@ -227,7 +225,7 @@
       </div>
       <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Предыдущее фото">‹</button>
       <button class="carousel__btn carousel__btn--next" type="button" aria-label="Следующее фото">›</button>
-      <div class="carousel__dots" aria-hidden="true"></div>
+      <div class="carousel__dots"></div>
       <div class="feature__badge">
         <b>Дефектовка NiMH высоковольтных батарей</b>
         <span>замер каждой ячейки под нагрузкой</span>
@@ -310,7 +308,7 @@
         </div>
         <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Предыдущее фото">‹</button>
         <button class="carousel__btn carousel__btn--next" type="button" aria-label="Следующее фото">›</button>
-        <div class="carousel__dots" aria-hidden="true"></div>
+        <div class="carousel__dots"></div>
         <div class="charge" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
       </div>
       <div class="why-ctrl__text">
@@ -348,7 +346,7 @@
           </div>
           <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Предыдущее фото">‹</button>
           <button class="carousel__btn carousel__btn--next" type="button" aria-label="Следующее фото">›</button>
-          <div class="carousel__dots" aria-hidden="true"></div>
+          <div class="carousel__dots"></div>
         </div>
         <h3>Контроллер охлаждения ВВБ<br>для Toyota — с экраном</h3>
         <p>Выводит на дисплей температуру салона, температуру ВВБ, режим вентилятора, температуру и обороты ДВС.</p>
@@ -372,7 +370,7 @@
           </div>
           <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Предыдущее фото">‹</button>
           <button class="carousel__btn carousel__btn--next" type="button" aria-label="Следующее фото">›</button>
-          <div class="carousel__dots" aria-hidden="true"></div>
+          <div class="carousel__dots"></div>
         </div>
         <h3>Контроллер охлаждения ВВБ<br>для Toyota — в кнопку</h3>
         <p>Дисплей встроен в штатную кнопку-заглушку на панели — максимально стоковый вид. Показывает температуру ВВБ и режим вентилятора.</p>
@@ -394,7 +392,7 @@
           </div>
           <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Предыдущее фото">‹</button>
           <button class="carousel__btn carousel__btn--next" type="button" aria-label="Следующее фото">›</button>
-          <div class="carousel__dots" aria-hidden="true"></div>
+          <div class="carousel__dots"></div>
         </div>
         <h3>Контроллер охлаждения ВВБ<br>для Toyota — без экрана</h3>
         <p>Подключается в OBD-порт и просто работает, как ELM327. Аккуратно и незаметно, без вывода на дисплей.</p>
@@ -415,7 +413,7 @@
           </div>
           <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Предыдущее фото">‹</button>
           <button class="carousel__btn carousel__btn--next" type="button" aria-label="Следующее фото">›</button>
-          <div class="carousel__dots" aria-hidden="true"></div>
+          <div class="carousel__dots"></div>
         </div>
         <h3>Контроллер управления помпой<br>«для свапа»</h3>
         <p>Управляет помпой охлаждения при свап-проектах. Наша разработка под нестандартные сборки.</p>
@@ -546,7 +544,7 @@
       </div>
       <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Предыдущие фото">‹</button>
       <button class="carousel__btn carousel__btn--next" type="button" aria-label="Следующие фото">›</button>
-      <div class="carousel__dots" aria-hidden="true"></div>
+      <div class="carousel__dots"></div>
     </div>
   </div>
 </section>
@@ -704,6 +702,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const canvas = document.getElementById('teslaLayer');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
+  const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let animationFrame = null;
+  let inViewport = !('IntersectionObserver' in window);
 
   function resizeCanvas() {
     canvas.width = window.innerWidth;
@@ -778,7 +779,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function animate() {
-    requestAnimationFrame(animate);
+    animationFrame = requestAnimationFrame(animate);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const dx = mouse.x - car.x;
@@ -981,7 +982,28 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.restore();
   }
 
-  animate();
+  function syncAnimation() {
+    if (inViewport && !document.hidden && !motionQuery.matches) {
+      if (animationFrame === null) {
+        refreshObstacles();
+        animationFrame = requestAnimationFrame(animate);
+      }
+    } else {
+      cancelAnimationFrame(animationFrame);
+      animationFrame = null;
+      if (motionQuery.matches) ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(([entry]) => {
+      inViewport = entry.isIntersecting;
+      syncAnimation();
+    });
+    observer.observe(canvas);
+  }
+  motionQuery.addEventListener('change', syncAnimation);
+  document.addEventListener('visibilitychange', syncAnimation);
+  syncAnimation();
 });
 </script>
 </body>

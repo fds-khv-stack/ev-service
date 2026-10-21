@@ -3,6 +3,8 @@
    =========================================================== */
 (() => {
   'use strict';
+  document.documentElement.classList.add('js-ready');
+  const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   /* --- год в подвале --- */
   const yearEl = document.getElementById('year');
@@ -29,6 +31,9 @@
     burger.setAttribute('aria-expanded', String(isOpen));
     document.body.classList.toggle('no-scroll', isOpen);
   };
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 900 && nav.classList.contains('is-open')) toggleMenu(false);
+  }, { passive: true });
   burger.addEventListener('click', () => toggleMenu());
   nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggleMenu(false)));
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') toggleMenu(false); });
@@ -215,11 +220,15 @@
     const currentIndex = () => Math.round(track.scrollLeft / stepW());
     function scrollToIndex(i) {
       const idx = Math.max(0, Math.min(slides.length - 1, i));
-      track.scrollTo({ left: idx * stepW(), behavior: 'smooth' });
+      track.scrollTo({ left: idx * stepW(), behavior: motionQuery.matches ? 'instant' : 'smooth' });
     }
     const update = () => {
       const i = currentIndex();
-      dots.forEach((d, di) => d.classList.toggle('is-active', di === i));
+      dots.forEach((d, di) => {
+        d.classList.toggle('is-active', di === i);
+        if (di === i) d.setAttribute('aria-current', 'true');
+        else d.removeAttribute('aria-current');
+      });
       if (prev) prev.disabled = track.scrollLeft <= 2;
       if (next) next.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 2;
     };
@@ -268,12 +277,27 @@
       const i = currentIndex();
       scrollToIndex(i >= slides.length - 1 ? 0 : i + 1);
     };
-    const startAuto = () => { if (!autoT) autoT = setInterval(advance, 2000); };
+    let inViewport = !('IntersectionObserver' in window);
+    let hovered = false;
     const stopAuto = () => { clearInterval(autoT); autoT = null; };
-    root.addEventListener('pointerenter', stopAuto);
-    root.addEventListener('pointerleave', startAuto);
-    document.addEventListener('visibilitychange', () => { document.hidden ? stopAuto() : startAuto(); });
-    startAuto();
+    const syncAuto = () => {
+      if (inViewport && !hovered && !document.hidden && !motionQuery.matches) {
+        if (autoT === null) autoT = setInterval(advance, 2000);
+      } else stopAuto();
+    };
+    root.addEventListener('pointerenter', () => { hovered = true; syncAuto(); });
+    root.addEventListener('pointerleave', () => { hovered = false; syncAuto(); });
+    document.addEventListener('visibilitychange', syncAuto);
+    motionQuery.addEventListener('change', syncAuto);
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(([entry]) => {
+        inViewport = entry.isIntersecting;
+        syncAuto();
+      });
+      observer.observe(root);
+    }
+    syncAuto();
+
 
     update();
   };
@@ -288,7 +312,14 @@
     if (e.key === 'Escape') closeLightbox();
     else if (e.key === 'ArrowLeft') step(-1);
     else if (e.key === 'ArrowRight') step(1);
-    else if (e.key === 'Tab') { e.preventDefault(); closeBtn.focus(); }
+    else if (e.key === 'Tab') {
+      const buttons = [...lightbox.querySelectorAll('button')].filter(b => !b.hidden && !b.disabled);
+      const index = buttons.indexOf(document.activeElement);
+      const nextIndex = index < 0 ? (e.shiftKey ? buttons.length - 1 : 0)
+        : (index + (e.shiftKey ? -1 : 1) + buttons.length) % buttons.length;
+      e.preventDefault();
+      buttons[nextIndex]?.focus();
+    }
   });
 
   /* --- пересчёт открытого аккордеона при ресайзе --- */
@@ -303,13 +334,12 @@
     }, 150);
   }, { passive: true });
   /* --- электродуги (удары тока) у заголовка hero --- */
-  const prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const DPR = Math.min(window.devicePixelRatio || 1, 2);
 
   const arcCanvas = document.getElementById('arcLayer');
   const heroTitle = document.querySelector('.hero__title');
   const logoMark = document.querySelector('.logo__mark');
-  if (arcCanvas && heroTitle && logoMark && !prefersReduce) {
+  if (arcCanvas && heroTitle && logoMark) {
     const ctx = arcCanvas.getContext('2d');
     let w = 0, h = 0, raf = null;
     const bolts = [];
@@ -393,13 +423,28 @@
       ctx.globalCompositeOperation = 'source-over';
       raf = requestAnimationFrame(frame);
     };
-    frame();
+    let inViewport = !('IntersectionObserver' in window);
+    const syncArc = () => {
+      if (inViewport && !document.hidden && !motionQuery.matches) {
+        if (raf === null) raf = requestAnimationFrame(frame);
+      } else {
+        cancelAnimationFrame(raf);
+        raf = null;
+        if (motionQuery.matches) ctx.clearRect(0, 0, w, h);
+      }
+    };
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(([entry]) => {
+        inViewport = entry.isIntersecting;
+        syncArc();
+      });
+      observer.observe(arcCanvas);
+    }
+    motionQuery.addEventListener('change', syncArc);
+    syncArc();
 
     let rtA;
     window.addEventListener('resize', () => { clearTimeout(rtA); rtA = setTimeout(resize, 200); }, { passive: true });
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) { if (raf) cancelAnimationFrame(raf); raf = null; }
-      else if (!raf) frame();
-    });
+    document.addEventListener('visibilitychange', syncArc);
   }
 })();
