@@ -1,0 +1,69 @@
+/* Dyno archive: inherits the audited site's palette and typography. */
+.dyno{background:var(--bg);scroll-margin-top:88px}
+.dyno__head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:40px}
+.dyno__head .section__sub{max-width:620px}
+.dyno__total{font:500 64px/1 'JetBrains Mono',monospace;color:var(--muted)}
+.dyno__highlights{margin-bottom:48px}
+.dyno__highlights h3{font-size:16px;font-weight:600;margin-bottom:16px}
+.dyno__leaders{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-block:1px solid var(--line-2)}
+.dyno__leader{padding:20px 20px 20px 0;min-width:0}
+.dyno__leader + .dyno__leader{border-left:1px solid var(--line-2);padding-left:20px}
+.dyno__leader strong{display:block;color:var(--cyan);font:500 28px/1.3 'JetBrains Mono',monospace;margin-bottom:8px}
+.dyno__leader span{display:block;font-size:13px;overflow-wrap:anywhere}
+.dyno__leader time{font-size:12px;color:var(--muted)}
+.dyno__leader:hover span{text-decoration:underline;text-underline-offset:4px}
+.dyno__layout{display:grid;grid-template-columns:280px minmax(0,1fr);gap:32px;align-items:start}
+.dyno__filters{position:sticky;top:96px;display:flex;flex-direction:column;gap:18px}
+.dyno__count{font-size:16px;font-weight:700}
+.dyno__matched{font-size:13px;color:var(--muted);min-height:21px}
+.dyno__field{display:grid;gap:6px;font-size:13px;color:var(--muted);min-width:0}
+.dyno select{width:100%;min-width:0;min-height:44px;background:var(--panel);color:var(--text);border:1px solid var(--line-2);border-radius:8px;padding:10px 30px 10px 12px;font:500 14px 'Manrope',sans-serif;color-scheme:dark;text-overflow:ellipsis}
+.dyno__check{display:flex;gap:10px;align-items:center;font-size:14px;min-height:44px;cursor:pointer}
+.dyno__check input{width:18px;height:18px;accent-color:var(--cyan);flex-shrink:0}
+.dyno__button{min-height:44px;padding:10px 20px;border:1px solid var(--line-2);border-radius:8px;background:transparent;color:var(--text);font-size:14px;font-weight:700}
+.dyno__button:hover{border-color:var(--cyan);color:var(--cyan)}
+.dyno :is(a,button,select,input):focus-visible{outline:2px solid var(--cyan);outline-offset:4px}
+.dyno__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start}
+.dyno-card{min-width:0;background:var(--panel);border:1px solid var(--line-2);border-radius:12px;overflow:hidden}
+.dyno-card__image{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;background:var(--bg-2)}
+.dyno-card__body{padding:20px}
+.dyno-card__meta{display:flex;justify-content:space-between;gap:12px;font-size:12px;color:var(--muted);margin-bottom:10px}
+.dyno-card h3{font-size:16px;line-height:1.45;font-weight:700;overflow-wrap:anywhere;margin-bottom:20px}
+.dyno-card__numbers{font:500 clamp(21px,2vw,28px)/1.4 'JetBrains Mono',monospace;letter-spacing:-.04em;white-space:nowrap}
+.dyno-card__numbers small{font:500 12px 'Manrope',sans-serif;letter-spacing:0;color:var(--muted)}
+.dyno-card__numbers--torque{font-size:19px;color:var(--muted);margin-top:5px}
+.dyno-card__arrow{color:var(--muted);font-size:.75em}
+.dyno-card__gain{margin-top:20px}
+.dyno-card__gain-label{display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px 8px;margin-bottom:8px;font-size:11px;color:var(--muted)}
+.dyno-card__gain-label b{font:500 12px 'JetBrains Mono',monospace;color:var(--cyan)}
+.dyno-card__track{height:6px;background:var(--panel-2);position:relative}
+.dyno-card__track::before{content:'';position:absolute;left:0;top:-3px;width:1px;height:12px;background:var(--muted)}
+.dyno-card__fill{height:100%;width:var(--gain);background:var(--cyan);transform-origin:left;transform:scaleX(1)}
+.dyno--waiting .dyno-card__fill{transform:scaleX(0)}
+.dyno--animate .dyno-card__fill{animation:dyno-fill 900ms cubic-bezier(.16,1,.3,1) both}
+@keyframes dyno-fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.dyno-card__delta{color:var(--cyan);font:500 16px 'JetBrains Mono',monospace;margin-top:12px}
+.dyno-card__note{color:var(--muted);font-size:13px;margin-top:12px}
+.dyno-card__features{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px;list-style:none}
+.dyno-card__features li{font-size:11px;color:var(--muted);background:var(--bg-2);padding:4px 8px;border-radius:4px}
+.dyno-card__footer{display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid var(--line);margin-top:20px;padding-top:12px;font-size:12px;color:var(--muted)}
+.dyno-card__footer a{display:inline-flex;align-items:center;min-height:44px;color:var(--text);text-decoration:underline;text-underline-offset:4px}
+.dyno-card__footer a:hover{color:var(--cyan)}
+.dyno__more{display:block;margin:28px auto 0;min-width:200px}
+.dyno [hidden]{display:none!important}
+.dyno__status{padding:24px;border:1px solid var(--line-2);border-radius:12px;color:var(--muted)}
+.dyno__status button{margin-top:16px;display:block}
+@media(min-width:1600px){.dyno>.container{max-width:1440px}.dyno__grid{grid-template-columns:repeat(3,minmax(0,1fr))}.dyno-card__numbers{font-size:24px}}
+@media(max-width:899px){
+ .dyno__layout{grid-template-columns:minmax(0,1fr);gap:24px}
+ .dyno__filters{position:static;flex-direction:row;flex-wrap:wrap;gap:10px;align-items:end}
+ .dyno__summary{flex-basis:100%}.dyno__matched:empty{display:none}
+ .dyno__field{flex:1 1 130px;max-width:100%}.dyno__field span{padding-left:10px}
+ .dyno select,.dyno__filters .dyno__button{border-radius:22px}
+ .dyno__check{flex:1 1 200px}.dyno__grid{grid-template-columns:minmax(0,1fr)}
+ .dyno-card__numbers{font-size:30px}.dyno-card__numbers--torque{font-size:23px}
+ .dyno__leaders{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .dyno__leader:nth-child(3){border-left:0;padding-left:0}.dyno__leader:nth-child(n+3){border-top:1px solid var(--line-2)}
+}
+@media(max-width:430px){.dyno__head{align-items:start;gap:12px}.dyno__head h2{font-size:27px}.dyno__total{font-size:36px}.dyno__leader strong{font-size:23px}.dyno-card__body{padding:18px}.dyno-card__numbers{font-size:27px}.dyno-card__numbers--torque{font-size:21px}}
+@media(prefers-reduced-motion:reduce){.dyno-card__fill{animation:none!important;transform:none!important}}

@@ -1,6 +1,9 @@
-.DS_Store
-Thumbs.db
+# артефакты проверок и служебные папки — не публикуем
+artifacts/
+.playwright-mcp/
 node_modules/
 *.log
 Logs/
 .vscode/
+.DS_Store
+Thumbs.db
