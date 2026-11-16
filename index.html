@@ -554,8 +554,8 @@
 <section class="section dyno" id="dyno" aria-labelledby="dyno-title">
   <div class="container">
     <header class="dyno__head">
-      <div><h2 class="section__title" id="dyno-title">Замеры мощности</h2>
-      <p class="section__sub">Реальные замеры на диностенде из архива EV Service. Результаты, фотографии и ссылки на исходные публикации.</p></div>
+      <div><h2 class="section__title" id="dyno-title">Замеры на диностенде</h2>
+      <p class="section__sub">Мощность и крутящий момент до и после настройки. Выберите автомобиль и откройте замер — внутри фотографии и описание из нашего архива Instagram.</p></div>
       <span class="dyno__total" aria-label="214 замеров в архиве">214</span>
     </header>
     <div class="dyno__highlights" hidden>
@@ -581,6 +581,26 @@
         <button class="dyno__button dyno__more" type="button" hidden>Показать ещё</button>
       </div>
     </div>
+    <dialog class="dyno-viewer" aria-labelledby="dyno-viewer-title">
+      <div class="dyno-viewer__bar">
+        <p class="dyno-viewer__position" aria-live="polite"></p>
+        <button class="dyno__button dyno-viewer__close" type="button" autofocus>Закрыть</button>
+      </div>
+      <div class="dyno-viewer__layout">
+        <div class="dyno-viewer__media"></div>
+        <div class="dyno-viewer__info">
+          <h3 id="dyno-viewer-title"></h3>
+          <div class="dyno-viewer__metrics"></div>
+          <p class="dyno-viewer__note"></p>
+          <details class="dyno-viewer__description"><summary>Описание из публикации</summary><p></p></details>
+          <div class="dyno-viewer__links"></div>
+        </div>
+      </div>
+      <div class="dyno-viewer__nav">
+        <button class="dyno__button" type="button" data-dyno-step="-1">Предыдущий</button>
+        <button class="dyno__button" type="button" data-dyno-step="1">Следующий</button>
+      </div>
+    </dialog>
   </div>
 </section>
 

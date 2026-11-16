@@ -25,7 +25,11 @@
 .dyno :is(a,button,select,input):focus-visible{outline:2px solid var(--cyan);outline-offset:4px}
 .dyno__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start}
 .dyno-card{min-width:0;background:var(--panel);border:1px solid var(--line-2);border-radius:12px;overflow:hidden}
-.dyno-card__image{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;background:var(--bg-2)}
+.dyno-card__preview{display:block;position:relative;background:var(--bg-2)}
+.dyno-card__image{width:100%;height:auto;aspect-ratio:4/3;object-fit:contain;background:var(--bg-2)}
+.dyno-card__open{display:flex;align-items:center;justify-content:space-between;min-height:44px;padding:10px 20px;font-size:14px;font-weight:700;color:var(--text);border-block:1px solid var(--line)}
+.dyno-card__preview:hover .dyno-card__open{color:var(--cyan)}
+.dyno-card__preview:focus-visible{outline-offset:-4px!important}
 .dyno-card__body{padding:20px}
 .dyno-card__meta{display:flex;justify-content:space-between;gap:12px;font-size:12px;color:var(--muted);margin-bottom:10px}
 .dyno-card h3{font-size:16px;line-height:1.45;font-weight:700;overflow-wrap:anywhere;margin-bottom:20px}
@@ -53,6 +57,28 @@
 .dyno [hidden]{display:none!important}
 .dyno__status{padding:24px;border:1px solid var(--line-2);border-radius:12px;color:var(--muted)}
 .dyno__status button{margin-top:16px;display:block}
+.dyno-viewer{width:min(1120px,calc(100% - 32px));max-height:calc(100dvh - 32px);margin:auto;padding:24px;border:1px solid var(--line-2);border-radius:var(--radius-sm);background:var(--panel);color:var(--text);overflow:auto;overscroll-behavior:contain}
+.dyno-viewer::backdrop{background:rgba(0,0,0,.85)}
+.dyno-viewer__bar,.dyno-viewer__nav{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.dyno-viewer__bar{margin-bottom:24px}
+.dyno-viewer__position{font-size:13px;color:var(--muted)}
+.dyno-viewer__layout{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:32px;align-items:start}
+.dyno-viewer__media{min-width:0;background:var(--bg-2)}
+.dyno-viewer__media img{width:100%;max-height:65dvh;object-fit:contain}
+.dyno-viewer__media>p{padding:24px;color:var(--muted)}
+.dyno-viewer__info{min-width:0}
+.dyno-viewer h3{font-size:24px;line-height:1.4;overflow-wrap:anywhere;margin-bottom:24px}
+.dyno-viewer__legend{font-size:13px;color:var(--muted);margin-bottom:8px}
+.dyno-viewer__note{font-size:14px;color:var(--muted);margin-top:16px}
+.dyno-viewer__description{margin-top:24px}
+.dyno-viewer__description summary{min-height:44px;cursor:pointer;font-size:14px;font-weight:700;padding-block:10px}
+.dyno-viewer__description p{white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px;color:var(--muted);line-height:1.7;margin-top:12px}
+.dyno-viewer__links{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.dyno-viewer__links a{display:inline-flex;align-items:center;font-size:13px}
+.dyno-viewer__nav{margin-top:24px;padding-top:16px;border-top:1px solid var(--line)}
+.dyno-viewer button:disabled{opacity:.45;cursor:default}
+.dyno-viewer :is(a,button,summary):focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+@media(max-width:768px){.dyno-viewer{padding:18px}.dyno-viewer__layout{grid-template-columns:minmax(0,1fr);gap:24px}.dyno-viewer__media img{max-height:50dvh}.dyno-viewer h3{font-size:21px}.dyno-viewer__nav{gap:8px}.dyno-viewer__nav button{padding-inline:12px}}
 @media(min-width:1600px){.dyno>.container{max-width:1440px}.dyno__grid{grid-template-columns:repeat(3,minmax(0,1fr))}.dyno-card__numbers{font-size:24px}}
 @media(max-width:899px){
  .dyno__layout{grid-template-columns:minmax(0,1fr);gap:24px}

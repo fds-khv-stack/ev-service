@@ -561,3 +561,28 @@ body.no-scroll .fab-call{opacity:0;pointer-events:none}
   *{animation:none!important;scroll-behavior:auto!important}
   .js-ready .reveal{opacity:1;transform:none}
 }
+
+/* ===========================================================
+   Фокус и нажатие — правки по аудиту 29.10.2026 (п.1 и п.3)
+   Было: :focus-visible только 1 правило на весь сайт,
+   40 из 172 интерактивных элементов без видимого фокуса.
+   =========================================================== */
+:is(a,button,select,input,textarea,summary,[tabindex]):focus-visible{
+  outline:2px solid var(--cyan);
+  outline-offset:3px;
+}
+/* на тёмной панели обводка читается, на светлых кнопках — добавляем тень */
+.btn:focus-visible,.cbtn:focus-visible{
+  outline:2px solid var(--bg);
+  box-shadow:0 0 0 4px var(--cyan);
+}
+/* ссылки в тексте: компактный отступ, чтобы обводка не липла к соседям */
+a:focus-visible{outline-offset:2px;border-radius:6px}
+
+/* Нажатие: у кнопок — сдвиг, у ссылок — притухание (без сдвига макета) */
+:is(.btn,.cbtn,.fab-call,button:not(.dyno__button)):active{transform:translateY(1px)}
+a:active{opacity:.72}
+
+@media (prefers-reduced-motion:reduce){
+  :is(a,button,.btn,.cbtn,.fab-call):active{transform:none}
+}
