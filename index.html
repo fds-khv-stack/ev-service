@@ -23,30 +23,6 @@
 <link rel="stylesheet" href="css/style-v2.css">
 <link rel="stylesheet" href="css/dyno.css">
 
-<style>
-  /* Стили для правильного наложения интерактивного слоя Tesla */
-  .tesla-layer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 1;             /* Выше бэкграунда, но ниже основного контента */
-    pointer-events: none;   /* Позволяет кликать сквозь холст по кнопкам и ссылкам */
-  }
-
-  .bg-fx {
-    z-index: 0;
-  }
-
-  main, 
-  .container, 
-  .btn {
-    position: relative;
-    z-index: 2;
-  }
-</style>
-
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -797,43 +773,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const trail = [];
   const maxTrailLen = 12;
 
-  // Препятствия: текст и блоки страницы — машинка не может сквозь них проехать
-  const OBST_SEL = 'h1,h2,h3,h4,.btn,.card,.pcard,.stat,.why__item,.acc__item,' +
-    '.factbox,.temp-step,.section__title,.section__sub,.kicker,.eyebrow,.geo__cities span,.pcard__price';
-  let obstacles = [];
-  function refreshObstacles() {
-    const vh = window.innerHeight, vw = window.innerWidth;
-    obstacles = [];
-    document.querySelectorAll(OBST_SEL).forEach((el) => {
-      const r = el.getBoundingClientRect();
-      if (r.width && r.height && r.bottom > 0 && r.top < vh && r.right > 0 && r.left < vw) {
-        obstacles.push({ left: r.left, top: r.top, right: r.right, bottom: r.bottom });
-      }
-    });
-  }
-  refreshObstacles();
-  let obstScheduled = false;
-  function scheduleRefresh() {
-    if (obstScheduled) return;
-    obstScheduled = true;
-    requestAnimationFrame(() => { obstScheduled = false; refreshObstacles(); });
-  }
-  window.addEventListener('scroll', scheduleRefresh, { passive: true });
-  window.addEventListener('resize', scheduleRefresh);
-  window.addEventListener('load', refreshObstacles);
-
-  const COLLIDE_R = car.height * 0.55;
-  function blocked(cx, cy) {
-    for (let i = 0; i < obstacles.length; i++) {
-      const o = obstacles[i];
-      const nx = cx < o.left ? o.left : (cx > o.right ? o.right : cx);
-      const ny = cy < o.top ? o.top : (cy > o.bottom ? o.bottom : cy);
-      const dx = cx - nx, dy = cy - ny;
-      if (dx * dx + dy * dy < COLLIDE_R * COLLIDE_R) return true;
-    }
-    return false;
-  }
-
   function animate() {
     animationFrame = requestAnimationFrame(animate);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -867,18 +806,10 @@ document.addEventListener('DOMContentLoaded', () => {
     car.vx = Math.cos(car.angle) * car.speed;
     car.vy = Math.sin(car.angle) * car.speed;
 
-    // Коллизии с текстом/блоками. Если машинка уже внутри блока — даём выехать.
-    if (blocked(car.x, car.y)) {
-      car.x += car.vx;
-      car.y += car.vy;
-    } else {
-      let moved = false;
-      if (!blocked(car.x + car.vx, car.y)) { car.x += car.vx; moved = true; }
-      else car.speed *= 0.5;
-      if (!blocked(car.x, car.y + car.vy)) { car.y += car.vy; moved = true; }
-      else car.speed *= 0.5;
-      if (!moved) { car.speed *= 0.4; car.angle += 0.25; car.isBraking = true; }
-    }
+    // Tesla свободно едет через весь экран, поверх контента; ограничиваем только края окна.
+    const edge = Math.max(car.width, car.height);
+    car.x = Math.max(edge, Math.min(window.innerWidth - edge, car.x + car.vx));
+    car.y = Math.max(edge, Math.min(window.innerHeight - edge, car.y + car.vy));
 
     // Световой шлейф
     if (car.speed > 1) {
@@ -1041,7 +972,6 @@ document.addEventListener('DOMContentLoaded', () => {
   function syncAnimation() {
     if (inViewport && !document.hidden && !motionQuery.matches) {
       if (animationFrame === null) {
-        refreshObstacles();
         animationFrame = requestAnimationFrame(animate);
       }
     } else {
@@ -1064,3 +994,4 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
+
